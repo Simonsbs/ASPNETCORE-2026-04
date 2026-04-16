@@ -1,10 +1,7 @@
 
-namespace Demo1
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
+namespace Demo1 {
+    public class Program {
+        public static void Main(string[] args) {
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -16,17 +13,24 @@ namespace Demo1
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.MapOpenApi();
-            }
+            //if (app.Environment.IsDevelopment()) {
+            //    app.MapOpenApi();
+            //}
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
+
+            //app.MapControllers();            
 
 
-            app.MapControllers();
+            app.Run(async (context) => {
+                await context.Response.WriteAsync("<html><body><b>Hello World!</b></body></html>");
+            });
+
+            app.Run(async (context) => {
+                await context.Response.WriteAsync("<html><body><b>Login:...</b></body></html>");
+            });
 
             app.Run();
         }
