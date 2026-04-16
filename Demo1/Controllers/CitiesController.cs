@@ -11,5 +11,18 @@ namespace Demo1.Controllers {
         public IEnumerable<CityDTO> GetCities() {
             return CitiesDataStore.Current;
         }
+
+        [HttpGet("{id}")]
+        public ActionResult<CityDTO> GetCity(int id) {
+            var city = CitiesDataStore.
+                Current.
+                FirstOrDefault(c => c.ID == id);
+
+            if (city == null) {
+                return NotFound();
+            }
+
+            return city;
+        }
     }   
 }
