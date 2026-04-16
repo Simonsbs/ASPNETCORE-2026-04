@@ -31,11 +31,7 @@ namespace Demo1 {
 
             //app.UseAuthorization();
 
-            //app.MapControllers();            
-
-
-
-            
+            app.MapControllers();            
 
             //app.Run(async (context) => {
             //    await context.Response.WriteAsync("<html><body><b>Login:...</b></body></html>");
