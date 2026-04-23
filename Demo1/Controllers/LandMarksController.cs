@@ -14,5 +14,22 @@ namespace Demo1.Controllers {
 
             return Ok(city.LandMarks);
         }
+
+        [HttpGet("{landMarkID}")]
+        public ActionResult GetLandMark(int cityID, int landMarkID) {
+            var city = DataStores.CitiesDataStore.Current.FirstOrDefault(c => c.ID == cityID);
+
+            if (city == null) {
+                return NotFound();
+            }
+
+            var landMark = city.LandMarks.FirstOrDefault(l => l.ID == landMarkID);
+
+            if (landMark == null) {
+                return NotFound();
+            }
+
+            return Ok(landMark);
+        }
     }
 }
