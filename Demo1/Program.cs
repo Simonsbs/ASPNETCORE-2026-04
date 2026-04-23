@@ -10,7 +10,9 @@ namespace Demo1 {
 
             builder.Services.AddControllers(o => {
                 // o.ReturnHttpNotAcceptable = true;
-            }).AddXmlDataContractSerializerFormatters();
+            })
+                .AddNewtonsoftJson()
+                .AddXmlDataContractSerializerFormatters();
 
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi

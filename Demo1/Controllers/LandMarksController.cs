@@ -1,5 +1,6 @@
 ﻿using Demo1.DataStores;
 using Demo1.DTO;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Demo1.Controllers {
@@ -90,6 +91,40 @@ namespace Demo1.Controllers {
 
             landMarkToUpdate.Name = updatedLandMark.Name;
             landMarkToUpdate.Description = updatedLandMark.Description;
+
+            return NoContent();
+        }
+
+        [HttpPatch("{landMarkID}")]
+        public ActionResult PatchLandMark(
+            int cityID, 
+            int landMarkID, 
+            JsonPatchDocument<LandMarkForUpdateDTO> patchDoc) {
+
+            var city = DataStores.CitiesDataStore.Current.FirstOrDefault(c => c.ID == cityID);
+
+            if (city == null) {
+                return NotFound();
+            }
+
+            var landMarkToUpdate = city.LandMarks.FirstOrDefault(lm => lm.ID == landMarkID);
+
+            if (landMarkToUpdate == null) {
+                return NotFound();
+            }
+
+            var lmToBePatched = new LandMarkForUpdateDTO() {
+                Name = landMarkToUpdate.Name,
+                Description = landMarkToUpdate.Description
+            };
+
+            patchDoc.ApplyTo(lmToBePatched);
+
+            landMarkToUpdate.Name = lmToBePatched.Name;
+            landMarkToUpdate.Description = lmToBePatched.Description;
+
+            // TODO: add validations!!!
+
 
             return NoContent();
         }
