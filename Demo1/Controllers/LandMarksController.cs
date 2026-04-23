@@ -52,6 +52,8 @@ namespace Demo1.Controllers {
 
             ((List<LandMarkDTO>)city.LandMarks).Add(finalLandMark);
 
+
+            // If enabling Route then dont forget to reenable the route name above in the GetLandMark method
             //return CreatedAtRoute(
             //    "GetLandMark", 
             //    new { 
