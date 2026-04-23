@@ -27,6 +27,27 @@
       "response": []
     },
     {
+      "name": "Get File",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7029/api/files/456.jpg",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7029",
+          "path": [
+            "api",
+            "files",
+            "456.jpg"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
       "name": "Get Problem",
       "request": {
         "method": "GET",
@@ -50,9 +71,19 @@
     },
     {
       "name": "Get City",
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {}
+      },
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/xml",
+            "type": "text",
+            "disabled": true
+          }
+        ],
         "url": {
           "raw": "https://localhost:7029/api/cities/1",
           "protocol": "https",
@@ -71,11 +102,22 @@
     },
     {
       "name": "Get Land Marks",
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {
+          "accept": true
+        }
+      },
       "request": {
         "method": "GET",
-        "header": [],
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/xml",
+            "type": "text"
+          }
+        ],
         "url": {
-          "raw": "https://localhost:7029/api/cities/555/landmarks/",
+          "raw": "https://localhost:7029/api/cities/55/landmarks/",
           "protocol": "https",
           "host": [
             "localhost"
@@ -84,7 +126,7 @@
           "path": [
             "api",
             "cities",
-            "555",
+            "55",
             "landmarks",
             ""
           ]
@@ -110,6 +152,102 @@
             "1",
             "landmarks",
             "5"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Land Mark",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"1234\",\r\n    \"description\": \"Some description asd asd asd ads asd asd asd asd asd asd asd asd asd adsasd\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7029/api/cities/1/landmarks/",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7029",
+          "path": [
+            "api",
+            "cities",
+            "1",
+            "landmarks",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Land Mark",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"123455\",\r\n    \"description\": \"Some description\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7029/api/cities/1/landmarks/1",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7029",
+          "path": [
+            "api",
+            "cities",
+            "1",
+            "landmarks",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Patch Land Mark",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "[\r\n    {\r\n        \"op\": \"replace\",\r\n        \"path\": \"/name\",\r\n        \"value\": \"PATCHED!!\"\r\n    }\r\n]",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7029/api/cities/1/landmarks/1",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7029",
+          "path": [
+            "api",
+            "cities",
+            "1",
+            "landmarks",
+            "1"
           ]
         }
       },
