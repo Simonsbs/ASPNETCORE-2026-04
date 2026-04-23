@@ -1,0 +1,119 @@
+{
+  "info": {
+    "_postman_id": "ea8b2383-df52-4cb4-93eb-752845d1fd85",
+    "name": "New Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "128075"
+  },
+  "item": [
+    {
+      "name": "Get Cities",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7029/api/cities",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7029",
+          "path": [
+            "api",
+            "cities"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Problem",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7029/api/cities/problem/5",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7029",
+          "path": [
+            "api",
+            "cities",
+            "problem",
+            "5"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get City",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7029/api/cities/1",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7029",
+          "path": [
+            "api",
+            "cities",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Land Marks",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7029/api/cities/555/landmarks/",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7029",
+          "path": [
+            "api",
+            "cities",
+            "555",
+            "landmarks",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Land Mark",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7029/api/cities/1/landmarks/5",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7029",
+          "path": [
+            "api",
+            "cities",
+            "1",
+            "landmarks",
+            "5"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
