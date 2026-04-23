@@ -24,5 +24,19 @@ namespace Demo1.Controllers {
 
             return city;
         }
+
+        [HttpGet("problem/{id}")]
+        public ActionResult MakeAProblem(int id) {
+
+            //var problem = new ProblemDetails() {
+            //    Title = "This is a problem",
+            //    Detail = "This is a detailed description of the problem",
+            //    Status = 301                
+            //};
+
+            //return BadRequest(problem);
+
+            return Problem($"An error with id: {id}", "An Instance", 456);
+        }
     }   
 }
