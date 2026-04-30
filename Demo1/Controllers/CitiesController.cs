@@ -1,5 +1,6 @@
 ﻿using Demo1.DataStores;
 using Demo1.DTO;
+using Demo1.Services;
 using Microsoft.AspNetCore.Mvc;
 using Serilog.Context;
 
@@ -8,8 +9,8 @@ namespace Demo1.Controllers {
     [Route("api/cities")]
     public class CitiesController : ControllerBase {
         private readonly ILogger<CitiesController> _logger;
-        private readonly Services.DevelopmentEmailService _email;
-        public CitiesController(ILogger<CitiesController> logger, Services.DevelopmentEmailService email) {
+        private readonly IEmailService _email;
+        public CitiesController(ILogger<CitiesController> logger, IEmailService email) {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _email = email ?? throw new ArgumentNullException(nameof(email));
         }
@@ -36,7 +37,7 @@ namespace Demo1.Controllers {
                 return NotFound();
             }
 
-            _email.SendDevEmail("City was accessed", $"City with id: {id} was accessed.");
+            _email.Send("City was accessed", $"City with id: {id} was accessed.");
 
             return city;
         }

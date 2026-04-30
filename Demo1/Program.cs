@@ -1,4 +1,5 @@
 
+using Demo1.Services;
 using Microsoft.AspNetCore.StaticFiles;
 using Serilog;
 
@@ -42,9 +43,12 @@ namespace Demo1 {
 
             // add the FileExtensionContentTypeProvider as a singleton service to be injected into the FilesController
             builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
-            
-            builder.Services.AddTransient<Services.DevelopmentEmailService>();
 
+#if DEBUG
+            builder.Services.AddTransient<IEmailService, DevelopmentEmailService>();
+#else
+            builder.Services.AddTransient<IEmailService, ProductionEmailService>();
+#endif
 
             builder.Services.AddProblemDetails();
 
