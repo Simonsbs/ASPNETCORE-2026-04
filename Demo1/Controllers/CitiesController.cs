@@ -8,8 +8,10 @@ namespace Demo1.Controllers {
     [Route("api/cities")]
     public class CitiesController : ControllerBase {
         private readonly ILogger<CitiesController> _logger;
-        public CitiesController(ILogger<CitiesController> logger) {
+        private readonly Services.DevelopmentEmailService _email;
+        public CitiesController(ILogger<CitiesController> logger, Services.DevelopmentEmailService email) {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _email = email ?? throw new ArgumentNullException(nameof(email));
         }
 
 
@@ -25,6 +27,7 @@ namespace Demo1.Controllers {
 
         [HttpGet("{id}")]
         public ActionResult<CityDTO> GetCity(int id) {
+
             var city = CitiesDataStore.
                 Current.
                 FirstOrDefault(c => c.ID == id);
@@ -32,6 +35,8 @@ namespace Demo1.Controllers {
             if (city == null) {
                 return NotFound();
             }
+
+            _email.SendDevEmail("City was accessed", $"City with id: {id} was accessed.");
 
             return city;
         }

@@ -42,6 +42,9 @@ namespace Demo1 {
 
             // add the FileExtensionContentTypeProvider as a singleton service to be injected into the FilesController
             builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
+            
+            builder.Services.AddTransient<Services.DevelopmentEmailService>();
+
 
             builder.Services.AddProblemDetails();
 
