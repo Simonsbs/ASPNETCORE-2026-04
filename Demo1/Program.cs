@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.StaticFiles;
+using Serilog;
 
 namespace Demo1 {
     public class Program {
@@ -9,11 +10,19 @@ namespace Demo1 {
             //Class1 c1 = new Class1(logger);
             //Class2 c2 = new Class2(logger);
 
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Console(outputTemplate: "{Timestamp:dd-MM-yyyy} [{MachineName}-{ThreadId}] {Message}{NewLine}")
+                .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Minute)
+                .Enrich.WithMachineName()
+                .Enrich.WithThreadId()
+                .CreateLogger();
 
             var builder = WebApplication.CreateBuilder(args);
             
             //builder.Logging.ClearProviders();
             //builder.Logging.AddConsole();
+
+            builder.Host.UseSerilog();
 
             // Add services to the container.
 
@@ -30,6 +39,8 @@ namespace Demo1 {
 
             // add the FileExtensionContentTypeProvider as a singleton service to be injected into the FilesController
             builder.Services.AddSingleton<FileExtensionContentTypeProvider>();
+
+            builder.Services.AddProblemDetails();
 
             //builder.Services.AddProblemDetails(o => {
             //    o.CustomizeProblemDetails = (ctx) => {
@@ -53,6 +64,8 @@ namespace Demo1 {
             
                 app.UseSwagger();
                 app.UseSwaggerUI();
+            } else {
+                app.UseExceptionHandler();
             }
 
             app.UseHttpsRedirection();
