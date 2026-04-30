@@ -30,7 +30,7 @@ namespace Demo1.Controllers {
 
         [HttpPost]
         public async Task<ActionResult> UploadFile(IFormFile file) {
-            if (file.Length > 1000000) {
+            if (file.Length > 1000000) { // 1MB
                 return BadRequest("File too big");
             }
             if (file.ContentType != "application/pdf") {
