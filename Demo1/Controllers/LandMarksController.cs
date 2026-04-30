@@ -15,25 +15,25 @@ namespace Demo1.Controllers {
 
         [HttpGet]
         public ActionResult<IEnumerable<LandMarkDTO>> GetLandMarks(int cityID) {
-            try {
-                //throw new Exception("Exception ERROR!!!!");
+            throw new Exception("Exception ERROR!!!!");
 
-                var city = DataStores.CitiesDataStore.Current.FirstOrDefault(c => c.ID == cityID);
+            //try {
+            var city = DataStores.CitiesDataStore.Current.FirstOrDefault(c => c.ID == cityID);
 
-                if (city == null) {
-                    _logger.LogInformation($"City with id {cityID} was not found when accessing landmarks.");
-                    return NotFound();
-                    //throw new ArgumentNullException("City not found");
-                }
-
-                _logger.LogInformation($"Returned {city.LandMarks.Count()} landmarks for city with id {cityID}.");
-
-                return Ok(city.LandMarks);
-            } catch (Exception ex) {
-                _logger.LogCritical($"Exception while getting landmarks for city with id {cityID}. {ex.Message}", ex);
-                
-                return StatusCode(500, "A problem happened while handling your request.");
+            if (city == null) {
+                _logger.LogInformation($"City with id {cityID} was not found when accessing landmarks.");
+                return NotFound();
+                //throw new ArgumentNullException("City not found");
             }
+
+            _logger.LogInformation($"Returned {city.LandMarks.Count()} landmarks for city with id {cityID}.");
+
+            return Ok(city.LandMarks);
+            //} catch (Exception ex) {
+            //    _logger.LogCritical($"Exception while getting landmarks for city with id {cityID}. {ex.Message}", ex);
+
+            //    return StatusCode(500, "A problem happened while handling your request.");
+            //}
         }
 
         [HttpGet("{landMarkID}"/*, Name = "GetLandMark"*/)]
@@ -115,8 +115,8 @@ namespace Demo1.Controllers {
 
         [HttpPatch("{landMarkID}")]
         public ActionResult PatchLandMark(
-            int cityID, 
-            int landMarkID, 
+            int cityID,
+            int landMarkID,
             JsonPatchDocument<LandMarkForUpdateDTO> patchDoc) {
 
             var city = DataStores.CitiesDataStore.Current.FirstOrDefault(c => c.ID == cityID);
