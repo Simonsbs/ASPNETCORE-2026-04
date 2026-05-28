@@ -116,47 +116,41 @@ namespace Demo1.Controllers {
         }
 
         [HttpPut("{landMarkID}")]
-        public ActionResult UpdateLandMark(int cityID, int landMarkID, LandMarkForUpdateDTO updatedLandMark) {
-            var city = DataStores.CitiesDataStore.Current.FirstOrDefault(c => c.ID == cityID);
-
-            if (city == null) {
+        public async Task<ActionResult> UpdateLandMark(int cityID, int landMarkID, LandMarkForUpdateDTO updatedLandMark) {
+            if (!await _cityRepository.ExistsAsync(cityID)) {
                 return NotFound();
             }
 
-            var landMarkToUpdate = city.LandMarks.FirstOrDefault(lm => lm.ID == landMarkID);
+            var landMark = await _landMarkRepository.GetLandMarkAsync(cityID, landMarkID);
 
-            if (landMarkToUpdate == null) {
+            if (landMark == null) {
                 return NotFound();
             }
 
-            landMarkToUpdate.Name = updatedLandMark.Name;
-            landMarkToUpdate.Description = updatedLandMark.Description;
+            _mapper.Map(updatedLandMark, landMark);
+            
+            await _landMarkRepository.SaveAsync();
 
             return NoContent();
         }
 
         [HttpPatch("{landMarkID}")]
-        public ActionResult PatchLandMark(
+        public async Task<ActionResult> PatchLandMark(
             int cityID,
             int landMarkID,
             JsonPatchDocument<LandMarkForUpdateDTO> patchDoc) {
 
-            var city = DataStores.CitiesDataStore.Current.FirstOrDefault(c => c.ID == cityID);
-
-            if (city == null) {
+            if (!await _cityRepository.ExistsAsync(cityID)) {
                 return NotFound();
             }
 
-            var landMarkToUpdate = city.LandMarks.FirstOrDefault(lm => lm.ID == landMarkID);
+            var landMarkToUpdate = await _landMarkRepository.GetLandMarkAsync(cityID, landMarkID);
 
             if (landMarkToUpdate == null) {
                 return NotFound();
             }
 
-            var lmToBePatched = new LandMarkForUpdateDTO() {
-                Name = landMarkToUpdate.Name,
-                Description = landMarkToUpdate.Description
-            };
+            var lmToBePatched = _mapper.Map<LandMarkForUpdateDTO>(landMarkToUpdate);
 
             patchDoc.ApplyTo(lmToBePatched, ModelState);
 
@@ -168,8 +162,9 @@ namespace Demo1.Controllers {
                 return BadRequest(ModelState);
             }
 
-            landMarkToUpdate.Name = lmToBePatched.Name;
-            landMarkToUpdate.Description = lmToBePatched.Description;
+            _mapper.Map(lmToBePatched, landMarkToUpdate);
+
+            await _landMarkRepository.SaveAsync();
 
             return NoContent();
         }
