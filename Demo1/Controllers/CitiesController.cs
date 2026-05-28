@@ -25,7 +25,10 @@ namespace Demo1.Controllers {
 
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CityWithoutLandmarksDTO>>> GetCities() {
+        public async Task<ActionResult<IEnumerable<CityWithoutLandmarksDTO>>> GetCities(
+            string? name
+            ) {
+            #region emails
             //_logger.LogInformation("No Property here");
             //using (LogContext.PushProperty("Simon", Guid.NewGuid())) {
             //    _email.Send("Getting all cities", "Getting all cities was called.");
@@ -48,8 +51,9 @@ namespace Demo1.Controllers {
             //        Description = city.Description
             //    });
             //}
+            #endregion
 
-            var cities = await _cityRepository.GetCitiesAsync();
+            var cities = await _cityRepository.GetCitiesAsync(name);
             
             return Ok(_mapper.Map<List<CityWithoutLandmarksDTO>>(cities));
         }
