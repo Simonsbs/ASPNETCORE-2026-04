@@ -65,20 +65,33 @@ namespace Demo1.Controllers {
         }
 
         [HttpGet("{landMarkID}"/*, Name = "GetLandMark"*/)]
-        public ActionResult<LandMarkDTO> GetLandMark(int cityID, int landMarkID) {
-            var city = DataStores.CitiesDataStore.Current.FirstOrDefault(c => c.ID == cityID);
+        public async Task<ActionResult<LandMarkDTO>> GetLandMark(int cityID, int landMarkID) {
+            //var city = DataStores.CitiesDataStore.Current.FirstOrDefault(c => c.ID == cityID);
 
-            if (city == null) {
+            //if (city == null) {
+            //    return NotFound();
+            //}
+
+            //var landMark = city.LandMarks.FirstOrDefault(l => l.ID == landMarkID);
+
+            //if (landMark == null) {
+            //    return NotFound();
+            //}
+
+            //return Ok(landMark);
+
+
+            if (!await _cityRepository.ExistsAsync(cityID)) {
                 return NotFound();
             }
 
-            var landMark = city.LandMarks.FirstOrDefault(l => l.ID == landMarkID);
+            var landMark = await _landMarkRepository.GetLandMarkAsync(cityID, landMarkID);
 
             if (landMark == null) {
                 return NotFound();
             }
 
-            return Ok(landMark);
+            return Ok(_mapper.Map<LandMarkDTO>(landMark));
         }
 
         [HttpPost]
