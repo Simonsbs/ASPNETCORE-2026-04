@@ -26,7 +26,8 @@ namespace Demo1.Controllers {
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CityWithoutLandmarksDTO>>> GetCities(
-            string? name
+            string? name,
+            string? search
             ) {
             #region emails
             //_logger.LogInformation("No Property here");
@@ -53,7 +54,7 @@ namespace Demo1.Controllers {
             //}
             #endregion
 
-            var cities = await _cityRepository.GetCitiesAsync(name);
+            var cities = await _cityRepository.GetCitiesAsync(name, search);
             
             return Ok(_mapper.Map<List<CityWithoutLandmarksDTO>>(cities));
         }

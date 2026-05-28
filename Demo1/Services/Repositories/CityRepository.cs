@@ -14,11 +14,17 @@ namespace Demo1.Services.Repositories {
             return _context.Cities.AnyAsync(c => c.Id == id);
         }
 
-        public async Task<ICollection<City>> GetCitiesAsync(string? name) {
+        public async Task<ICollection<City>> GetCitiesAsync(string? name, string? search) {
             var cities = _context.Cities.AsQueryable();
-            
+
             if (!string.IsNullOrEmpty(name)) {
                 cities = cities.Where(c => c.Name.Equals(name.Trim()));
+            }
+
+            if (!string.IsNullOrEmpty(search)) {
+                search = search.Trim();
+                cities = cities.Where(c => c.Name.Contains(search) || 
+                                        (c.Description != null && c.Description.Contains(search)));
             }
 
             return await cities.OrderByDescending(c => c.Name).ToListAsync();
@@ -39,7 +45,7 @@ namespace Demo1.Services.Repositories {
     }
 
     public interface ICityRepository {
-        Task<ICollection<City>> GetCitiesAsync(string? name);
+        Task<ICollection<City>> GetCitiesAsync(string? name, string? search);
 
         Task<bool> ExistsAsync(int id);
 
