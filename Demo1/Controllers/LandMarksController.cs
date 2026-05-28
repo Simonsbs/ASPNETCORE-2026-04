@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Demo1.DataStores;
 using Demo1.DTO;
+using Demo1.Entities;
 using Demo1.Services;
 using Demo1.Services.Repositories;
 using Microsoft.AspNetCore.JsonPatch;
@@ -95,42 +96,22 @@ namespace Demo1.Controllers {
         }
 
         [HttpPost]
-        public ActionResult<LandMarkDTO> AddLandMark(int cityID, LandMarkForCreateDTO newLandMark) {
-            var city = DataStores.CitiesDataStore.Current.FirstOrDefault(c => c.ID == cityID);
-
-            if (city == null) {
+        public async Task<ActionResult<LandMarkDTO>> AddLandMark(int cityID, LandMarkForCreateDTO newLandMark) {
+            if (!await _cityRepository.ExistsAsync(cityID)) {
                 return NotFound();
             }
 
-            var lastID = CitiesDataStore.Current.SelectMany(c => c.LandMarks).Max(lm => lm.ID);
+            LandMark finalLandMark = _mapper.Map<LandMark>(newLandMark);
 
-            var finalLandMark = new LandMarkDTO {
-                ID = ++lastID,
-                Name = newLandMark.Name,
-                Description = newLandMark.Description
-            };
-
-            ((List<LandMarkDTO>)city.LandMarks).Add(finalLandMark);
-
-
-            // If enabling Route then dont forget to reenable the route name above in the GetLandMark method
-            //return CreatedAtRoute(
-            //    "GetLandMark", 
-            //    new { 
-            //        cityID = cityID,
-            //        landMarkID = finalLandMark.ID
-            //    }, 
-            //    finalLandMark
-            //);
-
-
+            await _landMarkRepository.AddLandMarkAsync(cityID, finalLandMark);
+            
             return CreatedAtAction(
                 nameof(GetLandMark),
                 new {
                     cityID = cityID,
-                    landMarkID = finalLandMark.ID
+                    landMarkID = finalLandMark.Id
                 },
-                finalLandMark
+                _mapper.Map<LandMarkDTO>(finalLandMark)
             );
         }
 

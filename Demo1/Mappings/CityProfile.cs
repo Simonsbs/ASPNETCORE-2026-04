@@ -8,6 +8,7 @@ namespace Demo1.Mappings {
             CreateMap<City, CityDTO>();
             CreateMap<City, CityWithoutLandmarksDTO>();
             CreateMap<LandMark, LandMarkDTO>();
+            CreateMap<LandMarkForCreateDTO, LandMark>();
         }
     }
 }

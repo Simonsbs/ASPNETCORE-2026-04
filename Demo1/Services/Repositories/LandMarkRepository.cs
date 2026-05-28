@@ -18,10 +18,14 @@ namespace Demo1.Services.Repositories {
             return await _context.LandMarks.FirstOrDefaultAsync(l => l.CityId == cityId && l.Id == landMarkId);
         }
 
-        public async Task AddLandMarkAsync(int cityId, LandMark landMark) {
+        public async Task AddLandMarkAsync(int cityId, LandMark landMark, bool autoSave = true) {
             var city = await _context.Cities.FirstOrDefaultAsync(c => c.Id == cityId);
             if (city != null) {
                 city.LandMarks.Add(landMark);
+            }
+
+            if (autoSave) {
+                await _context.SaveChangesAsync();
             }
         }
 
@@ -30,6 +34,10 @@ namespace Demo1.Services.Repositories {
             if (city != null) {
                 city.LandMarks.Remove(landMark);
             }
+        }
+
+        public async Task SaveAsync() {
+            await _context.SaveChangesAsync();
         }
     }
 }
