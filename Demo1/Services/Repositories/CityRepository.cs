@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Demo1.Services.Repositories {
     public class CityRepository : ICityRepository {
+        const int maxPageSize = 10;
+        
         private readonly MyMainContext _context;
 
         public CityRepository(MyMainContext context) {
@@ -14,7 +16,18 @@ namespace Demo1.Services.Repositories {
             return _context.Cities.AnyAsync(c => c.Id == id);
         }
 
-        public async Task<ICollection<City>> GetCitiesAsync(string? name, string? search) {
+        public async Task<(ICollection<City> Cities, PagingMetadata PagingMetadata)> GetCitiesAsync(
+            string? name, 
+            string? search,
+            int? pageNumber = 1,
+            int? pageSize = maxPageSize
+            ) {
+
+            
+            if (pageSize > maxPageSize) {
+                pageSize = maxPageSize; 
+            }
+
             var cities = _context.Cities.AsQueryable();
 
             if (!string.IsNullOrEmpty(name)) {
@@ -27,7 +40,17 @@ namespace Demo1.Services.Repositories {
                                         (c.Description != null && c.Description.Contains(search)));
             }
 
-            return await cities.OrderByDescending(c => c.Name).ToListAsync();
+            var totalItemCount = await cities.CountAsync();
+
+            var metadata = new PagingMetadata(totalItemCount, 
+                                                pageSize ?? maxPageSize, 
+                                                pageNumber ?? 1);
+
+            cities = cities.
+                Skip(((pageNumber ?? 1) - 1) * (pageSize ?? maxPageSize)).
+                Take(pageSize ?? maxPageSize);
+
+            return (await cities.OrderByDescending(c => c.Name).ToListAsync(), metadata);
         }
 
         public async Task<City?> GetCityAsync(int id, bool includeLandMarks) {
@@ -45,7 +68,11 @@ namespace Demo1.Services.Repositories {
     }
 
     public interface ICityRepository {
-        Task<ICollection<City>> GetCitiesAsync(string? name, string? search);
+        Task<(ICollection<City> Cities, PagingMetadata PagingMetadata)> GetCitiesAsync(
+            string? name, 
+            string? search, 
+            int? pageNumber, 
+            int? pageSize);
 
         Task<bool> ExistsAsync(int id);
 

@@ -27,7 +27,9 @@ namespace Demo1.Controllers {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CityWithoutLandmarksDTO>>> GetCities(
             string? name,
-            string? search
+            string? search,
+            int? pageNumber,
+            int? pageSize
             ) {
             #region emails
             //_logger.LogInformation("No Property here");
@@ -54,14 +56,28 @@ namespace Demo1.Controllers {
             //}
             #endregion
 
-            var cities = await _cityRepository.GetCitiesAsync(name, search);
-            
+            var (cities, metadata) = await _cityRepository.GetCitiesAsync(name, search, pageNumber, pageSize);
+
+            //Response.Headers.Append("X-Pagination", System.Text.Json.JsonSerializer.Serialize(metadata));
+            Response.Headers.Append("X-Pagination-PageSize", metadata.PageSize.ToString());
+            Response.Headers.Append("X-Pagination-TotalItemCount", metadata.TotalItemCount.ToString());
+            Response.Headers.Append("X-Pagination-CurrentPage", metadata.CurrentPage.ToString());
+            Response.Headers.Append("X-Pagination-TotalPageCount", metadata.TotalPageCount.ToString());
+
             return Ok(_mapper.Map<List<CityWithoutLandmarksDTO>>(cities));
+
+            // this is ok, but not ideal, we want to return the metadata in the headers, not the body
+            //return Ok(
+            //    new {
+            //        data = _mapper.Map<List<CityWithoutLandmarksDTO>>(cities),
+            //        meta = metadata
+            //    }
+            //   );
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCity(int id, bool includeLandmarks = false) {
-            
+
             var city = await _cityRepository.GetCityAsync(id, includeLandmarks);
 
             if (city == null) {
@@ -69,7 +85,7 @@ namespace Demo1.Controllers {
             }
 
             if (includeLandmarks) {
-                return Ok(_mapper.Map<CityDTO>(city)) ;
+                return Ok(_mapper.Map<CityDTO>(city));
             }
             return Ok(_mapper.Map<CityWithoutLandmarksDTO>(city));
 
@@ -112,5 +128,5 @@ namespace Demo1.Controllers {
 
             //return Problem($"An error with id: {id}", "An Instance", 456);
         }
-    }   
+    }
 }
