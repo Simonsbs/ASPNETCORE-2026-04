@@ -170,24 +170,22 @@ namespace Demo1.Controllers {
         }
 
         [HttpDelete("{landMarkID}")]
-        public ActionResult DeleteLandMark(int cityID,
+        public async Task<ActionResult> DeleteLandMark(int cityID,
             int landMarkID
             ) {
 
-            var city = DataStores.CitiesDataStore.Current.FirstOrDefault(c => c.ID == cityID);
-
-            if (city == null) {
+            if (!await _cityRepository.ExistsAsync(cityID)) {
                 return NotFound();
             }
 
-            var landMarkToDelete = city.LandMarks.FirstOrDefault(lm => lm.ID == landMarkID);
+            var landMarkToDelete = await _landMarkRepository.GetLandMarkAsync(cityID, landMarkID);
 
             if (landMarkToDelete == null) {
                 return NotFound();
             }
 
-            ((List<LandMarkDTO>)city.LandMarks).Remove(landMarkToDelete);
-
+            await _landMarkRepository.DeleteAsync(cityID, landMarkToDelete);
+            
             return NoContent();
         }
     }

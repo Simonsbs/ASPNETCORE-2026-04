@@ -29,10 +29,14 @@ namespace Demo1.Services.Repositories {
             }
         }
 
-        public void Delete(int cityId, LandMark landMark) {
-            var city = _context.Cities.FirstOrDefault(c => c.Id == cityId);
+        public async Task DeleteAsync(int cityId, LandMark landMark, bool autoSave = true) {
+            var city = await _context.Cities.FirstOrDefaultAsync(c => c.Id == cityId);
             if (city != null) {
                 city.LandMarks.Remove(landMark);
+            }
+
+            if (autoSave) {
+                await _context.SaveChangesAsync();
             }
         }
 
