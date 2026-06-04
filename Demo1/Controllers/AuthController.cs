@@ -42,10 +42,12 @@ namespace Demo1.Controllers {
 
             // create claims
             var claims = new List<Claim> {
-                new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.GivenName, user.FirstName),
-                new Claim(ClaimTypes.Surname, user.LastName),
-                new Claim(ClaimTypes.Role, user.IsAdmin ? "Admin" : "User"),
+                new Claim(JwtRegisteredClaimNames.Name, user.Username),
+                new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
+                new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
+                new Claim(JwtRegisteredClaimNames.Iss, _configuration["Authentication:Issuer"] ?? throw new ArgumentNullException("Issuer not found in settings")),
+                new Claim(JwtRegisteredClaimNames.Aud, _configuration["Authentication:Audience"] ?? throw new ArgumentNullException("Audience not found in settings")),
+                new Claim("role", user.IsAdmin ? "Admin" : "User"),
                 new Claim("Password", user.Password)
             };
 
