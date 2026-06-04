@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Demo1.DataStores;
 using Demo1.DbContexts;
 using Demo1.DTO;
@@ -10,8 +11,9 @@ using Serilog.Context;
 
 namespace Demo1.Controllers {
     [ApiController]
-    [Authorize]
-    [Route("api/cities")]
+   // [Authorize]
+    [Route("api/v{version:apiVersion}/cities")]
+    [ApiVersion(1)]
     public class CitiesController : ControllerBase {
         private readonly ILogger<CitiesController> _logger;
         private readonly IEmailService _email;
@@ -27,7 +29,7 @@ namespace Demo1.Controllers {
 
 
         [HttpGet]
-        [Authorize(Policy = "AdminOnly")]
+        // [Authorize(Policy = "AdminOnly")]
         // [Authorize(Policy = "CanGetBulk")]
         public async Task<ActionResult<IEnumerable<CityWithoutLandmarksDTO>>> GetCities(
             string? name,

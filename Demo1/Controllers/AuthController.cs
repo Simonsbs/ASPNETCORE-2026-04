@@ -1,4 +1,5 @@
-﻿using Demo1.DTO;
+﻿using Asp.Versioning;
+using Demo1.DTO;
 using Demo1.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -8,7 +9,9 @@ using System.Text;
 
 namespace Demo1.Controllers {
     [ApiController]
-    [Route("api/auth")]
+    [Route("api/v{version:apiVersion}/auth")]
+    [ApiVersion(2)]
+    [ApiVersion(1)]
     public class AuthController : ControllerBase {
         private readonly List<User> users = new(){
             new User { Username = "admin", Password = "1234", FirstName = "John", LastName = "Doe", IsAdmin = true },
@@ -20,6 +23,22 @@ namespace Demo1.Controllers {
         public AuthController(IConfiguration configuration) {
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
+
+
+
+        [HttpGet("something")]
+        [MapToApiVersion(1)]
+        public ActionResult<string> GetSomething() {
+            return Ok("This is something!!!");
+        }
+
+        [HttpGet("something")]
+        [MapToApiVersion(2)]
+        public ActionResult<string> GetSomething2(string name) {
+            return Ok($"This something is better!!! Hey {name}");
+        }
+
+
 
 
         [HttpPost("login")]

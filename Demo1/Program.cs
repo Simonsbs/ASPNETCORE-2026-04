@@ -1,4 +1,5 @@
 
+using Asp.Versioning;
 using Demo1.DbContexts;
 using Demo1.Services;
 using Demo1.Services.Repositories;
@@ -114,6 +115,12 @@ namespace Demo1 {
                 });
             });
 
+
+            builder.Services.AddApiVersioning(setupAction => {
+                setupAction.ReportApiVersions = true;
+                setupAction.AssumeDefaultVersionWhenUnspecified = true;
+                setupAction.DefaultApiVersion = new ApiVersion(1);
+            }).AddMvc();
 
 
             // ---------------------------------------------------------------------------------------------

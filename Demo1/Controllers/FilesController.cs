@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.StaticFiles;
 
 namespace Demo1.Controllers {
     [ApiController]
-    [Route("api/files")]
+    [Route("api/v{version:apiVersion}/files")]
     public class FilesController : ControllerBase {
         private FileExtensionContentTypeProvider _fileExtensionContentTypeProvider;
         private ILogger<FilesController> _logger;

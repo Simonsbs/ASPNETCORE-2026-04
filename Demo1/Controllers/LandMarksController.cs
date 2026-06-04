@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Asp.Versioning;
+using AutoMapper;
 using Demo1.DataStores;
 using Demo1.DTO;
 using Demo1.Entities;
@@ -9,7 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Demo1.Controllers {
     [ApiController]
-    [Route("api/cities/{cityID}/landmarks")]
+    [Route("api/v{version:apiVersion}/cities/{cityID}/landmarks")]
+    [ApiVersion(1)]
+    [ApiVersion(2)]
     public class LandMarksController : Controller {
         private readonly ILogger<LandMarksController> _logger;
         private readonly IEmailService _email;
