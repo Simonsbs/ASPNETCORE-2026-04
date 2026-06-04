@@ -1,0 +1,316 @@
+{
+  "info": {
+    "_postman_id": "ea8b2383-df52-4cb4-93eb-752845d1fd85",
+    "name": "Demo1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "128075"
+  },
+  "item": [
+    {
+      "name": "Get Cities",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}api/cities",
+          "host": [
+            "{{host}}api"
+          ],
+          "path": [
+            "cities"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"username\": \"admin\",\r\n    \"password\": \"1234\"     \r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}api/auth/login",
+          "host": [
+            "{{host}}api"
+          ],
+          "path": [
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get File",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}api/files/456.jpg",
+          "host": [
+            "{{host}}api"
+          ],
+          "path": [
+            "files",
+            "456.jpg"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Problem",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}api/cities/problem/5",
+          "host": [
+            "{{host}}api"
+          ],
+          "path": [
+            "cities",
+            "problem",
+            "5"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get City",
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {}
+      },
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/xml",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "url": {
+          "raw": "{{host}}api/cities/1?includeLandmarks=true",
+          "host": [
+            "{{host}}api"
+          ],
+          "path": [
+            "cities",
+            "1"
+          ],
+          "query": [
+            {
+              "key": "includeLandmarks",
+              "value": "true"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Land Marks",
+      "protocolProfileBehavior": {
+        "disabledSystemHeaders": {
+          "accept": true
+        }
+      },
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Accept",
+            "value": "application/xml",
+            "type": "text",
+            "disabled": true
+          }
+        ],
+        "url": {
+          "raw": "{{host}}api/cities/1/landmarks/",
+          "host": [
+            "{{host}}api"
+          ],
+          "path": [
+            "cities",
+            "1",
+            "landmarks",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get Land Mark",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}api/cities/1/landmarks/5",
+          "host": [
+            "{{host}}api"
+          ],
+          "path": [
+            "cities",
+            "1",
+            "landmarks",
+            "5"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Land Mark",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"12345\",\r\n    \"description\": \"Some descr\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7029/api/cities/1/landmarks/",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7029",
+          "path": [
+            "api",
+            "cities",
+            "1",
+            "landmarks",
+            ""
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Update Land Mark",
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"name\": \"123455\",\r\n    \"description\": \"Some description\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "https://localhost:7029/api/cities/1/landmarks/1",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7029",
+          "path": [
+            "api",
+            "cities",
+            "1",
+            "landmarks",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Patch Land Mark",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "[\r\n    {\r\n        \"op\": \"replace\",\r\n        \"path\": \"/name\",\r\n        \"value\": \"PATCHED!!\"\r\n    }\r\n]",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{host}}api/cities/1/landmarks/1",
+          "host": [
+            "{{host}}api"
+          ],
+          "path": [
+            "cities",
+            "1",
+            "landmarks",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Delete Land Mark",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "https://localhost:7029/api/cities/1/landmarks/1",
+          "protocol": "https",
+          "host": [
+            "localhost"
+          ],
+          "port": "7029",
+          "path": [
+            "api",
+            "cities",
+            "1",
+            "landmarks",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "New Request",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "asdasdas",
+          "host": [
+            "asdasdas"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": ""
+    }
+  ]
+}

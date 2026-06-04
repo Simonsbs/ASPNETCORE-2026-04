@@ -1,0 +1,126 @@
+{
+  "info": {
+    "_postman_id": "10d56fc2-7a5c-49f1-ac4b-4fde2650fbf8",
+    "name": "Minimal API + Injection Demo",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "128075"
+  },
+  "item": [
+    {
+      "name": "Root",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}",
+          "host": [
+            "{{host}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get User Unsafe",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}users/unsafe/?userName=admin",
+          "host": [
+            "{{host}}users"
+          ],
+          "path": [
+            "unsafe",
+            ""
+          ],
+          "query": [
+            {
+              "key": "userName",
+              "value": "admin"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get User Safe",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}users/safe/?userName=simon",
+          "host": [
+            "{{host}}users"
+          ],
+          "path": [
+            "safe",
+            ""
+          ],
+          "query": [
+            {
+              "key": "userName",
+              "value": "simon"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get User Unsafe - Hacked",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}users/unsafe/?userName=' OR 1=1;",
+          "host": [
+            "{{host}}users"
+          ],
+          "path": [
+            "unsafe",
+            ""
+          ],
+          "query": [
+            {
+              "key": "userName",
+              "value": "' OR 1=1;"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Get User Safe - Hacked",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{host}}users/safe/?userName=' OR 1=1;",
+          "host": [
+            "{{host}}users"
+          ],
+          "path": [
+            "safe",
+            ""
+          ],
+          "query": [
+            {
+              "key": "userName",
+              "value": "' OR 1=1;"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "host",
+      "value": ""
+    }
+  ]
+}
