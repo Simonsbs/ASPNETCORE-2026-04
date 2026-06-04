@@ -45,7 +45,23 @@ namespace Demo1 {
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
-            builder.Services.AddSwaggerGen();
+
+
+            builder.Services.AddSwaggerGen(setupAction => {
+                setupAction.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo {
+                    Title = "Demo API",
+                    Version = "v1",
+                    Description = "This is a demo API for ASP.NET Core"
+                });
+
+                setupAction.SwaggerDoc("v2", new Microsoft.OpenApi.Models.OpenApiInfo {
+                    Title = "Demo API",
+                    Version = "v2",
+                    Description = "This is a demo API for ASP.NET Core"
+                });
+            });
+
+
             builder.Services.AddAutoMapper(_ => {
                 // license goes here
             }, typeof(Program));
@@ -120,7 +136,12 @@ namespace Demo1 {
                 setupAction.ReportApiVersions = true;
                 setupAction.AssumeDefaultVersionWhenUnspecified = true;
                 setupAction.DefaultApiVersion = new ApiVersion(1);
-            }).AddMvc();
+            })
+                .AddMvc()
+                .AddApiExplorer(setupAction => {
+                    setupAction.GroupNameFormat = "'v'V";
+                    setupAction.SubstituteApiVersionInUrl = true;
+                });
 
 
             // ---------------------------------------------------------------------------------------------
@@ -145,7 +166,13 @@ namespace Demo1 {
                 app.MapOpenApi();
 
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(setupAction => {
+
+                    setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Demo API v1");
+                    setupAction.SwaggerEndpoint("/swagger/v2/swagger.json", "Demo API v2");
+
+
+                });
             } else {
                 app.UseExceptionHandler();
             }
