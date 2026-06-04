@@ -6,6 +6,7 @@ using Demo1.Services.Repositories;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text;
 
@@ -59,8 +60,35 @@ namespace Demo1 {
                     Version = "v2",
                     Description = "This is a demo API for ASP.NET Core"
                 });
-            });
 
+
+                setupAction.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
+                    Description = "JWT Authorization header using the Bearer scheme",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "jwt"
+                });
+
+
+                setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                    {
+                        new OpenApiSecurityScheme {
+                            Reference = new OpenApiReference {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        Array.Empty<string>()
+                    }
+                });
+
+
+
+                // ---------
+
+            });
 
             builder.Services.AddAutoMapper(_ => {
                 // license goes here
