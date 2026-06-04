@@ -61,7 +61,10 @@ namespace Demo1 {
                     Description = "This is a demo API for ASP.NET Core"
                 });
 
+                setupAction.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, "Demo1.xml"));
 
+
+                // add bearer token authentication to swagger
                 setupAction.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme {
                     Description = "JWT Authorization header using the Bearer scheme",
                     Name = "Authorization",

@@ -8,6 +8,10 @@ using System.Security.Claims;
 using System.Text;
 
 namespace Demo1.Controllers {
+
+    /// <summary>
+    /// Controller for handling authentication and authorization
+    /// </summary>
     [ApiController]
     [Route("api/v{version:apiVersion}/auth")]
     [ApiVersion(2)]
@@ -25,20 +29,33 @@ namespace Demo1.Controllers {
         }
 
 
-
+        /// <summary>
+        /// This is a silly function to demonstrate versioning.
+        /// </summary>
+        /// <response code="404">If the item is not found SIMON!!</response>
+        /// <response code="401">If the user is not authorized BOB!!!</response>
+        /// <returns>always returns the same thing</returns>
         [HttpGet("something")]
         [MapToApiVersion(1)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public ActionResult<string> GetSomething() {
+            
+            
+            
             return Ok("This is something!!!");
         }
 
+        /// <summary>
+        /// This is a new version of the same function to demonstrate versioning.
+        /// </summary>
+        /// <param name="name">this is your name</param>
+        /// <returns>the same string with your name at the end</returns>
         [HttpGet("something")]
         [MapToApiVersion(2)]
         public ActionResult<string> GetSomething2(string name) {
             return Ok($"This something is better!!! Hey {name}");
         }
-
-
 
 
         [HttpPost("login")]
@@ -49,8 +66,10 @@ namespace Demo1.Controllers {
                 return Unauthorized();
             }
 
+
+
             // get secret key from appsettings or from environment variable
-            var configKey = _configuration["Authentication:SecretKey"] ?? 
+            var configKey = _configuration["Authentication:SecretKey"] ??
                 throw new ArgumentNullException("Secret key not found in settings");
 
             // create symmetric security key
@@ -64,9 +83,9 @@ namespace Demo1.Controllers {
                 new Claim(JwtRegisteredClaimNames.Name, user.Username),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
-                new Claim(JwtRegisteredClaimNames.Iss, _configuration["Authentication:Issuer"] 
+                new Claim(JwtRegisteredClaimNames.Iss, _configuration["Authentication:Issuer"]
                     ?? throw new ArgumentNullException("Issuer not found in settings")),
-                new Claim(JwtRegisteredClaimNames.Aud, _configuration["Authentication:Audience"] 
+                new Claim(JwtRegisteredClaimNames.Aud, _configuration["Authentication:Audience"]
                     ?? throw new ArgumentNullException("Audience not found in settings")),
                 new Claim("IsAdmin", user.IsAdmin ? "Admin" : "User"),
                 // new Claim("BulkEnabled", DateTime.Now.DayOfWeek == DayOfWeek.Tuesday ? "True" : "False")
