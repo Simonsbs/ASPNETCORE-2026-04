@@ -93,8 +93,25 @@ namespace Demo1 {
                     IssuerSigningKey = new SymmetricSecurityKey(
                         Encoding.UTF8.GetBytes(
                             builder.Configuration["Authentication:SecretKey"]
-                            ?? throw new ArgumentNullException("Secret key not found in settings")))
+                            ?? throw new ArgumentNullException("Secret key not found in settings"))),
+
+                    ValidateLifetime = true,
+                    //ClockSkew = TimeSpan.Zero
+
+                    RequireExpirationTime = true,
+                    ValidAlgorithms = new[] { SecurityAlgorithms.HmacSha256 }
                 };
+            });
+
+            builder.Services.AddAuthorization(options => {
+                options.AddPolicy("AdminOnly", policy => {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("IsAdmin", "Admin");
+                });
+                options.AddPolicy("CanGetBulk", policy => {
+                    policy.RequireAuthenticatedUser();
+                    policy.RequireClaim("BulkEnabled", "True");
+                });
             });
 
 

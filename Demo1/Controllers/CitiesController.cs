@@ -27,6 +27,8 @@ namespace Demo1.Controllers {
 
 
         [HttpGet]
+        [Authorize(Policy = "AdminOnly")]
+        // [Authorize(Policy = "CanGetBulk")]
         public async Task<ActionResult<IEnumerable<CityWithoutLandmarksDTO>>> GetCities(
             string? name,
             string? search,
@@ -79,6 +81,12 @@ namespace Demo1.Controllers {
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetCity(int id, bool includeLandmarks = false) {
+
+            var role = User.Claims.FirstOrDefault(c => c.Type == "IsAdmin")?.Value;
+            if (role != "Admin") {
+                return Forbid();
+            }
+
 
             var city = await _cityRepository.GetCityAsync(id, includeLandmarks);
 

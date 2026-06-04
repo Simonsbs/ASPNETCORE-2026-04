@@ -49,14 +49,16 @@ namespace Demo1.Controllers {
                     ?? throw new ArgumentNullException("Issuer not found in settings")),
                 new Claim(JwtRegisteredClaimNames.Aud, _configuration["Authentication:Audience"] 
                     ?? throw new ArgumentNullException("Audience not found in settings")),
-                new Claim("role", user.IsAdmin ? "Admin" : "User"),
-                new Claim("Password", user.Password)
+                new Claim("IsAdmin", user.IsAdmin ? "Admin" : "User"),
+                // new Claim("BulkEnabled", DateTime.Now.DayOfWeek == DayOfWeek.Tuesday ? "True" : "False")
+                // new Claim("Password", user.Password) // dont do this !!!!!
             };
 
             // create token
             var token = new JwtSecurityToken(
                 claims: claims,
                 expires: DateTime.Now.AddMinutes(30),
+                notBefore: DateTime.Now,
                 signingCredentials: signingCreds
             );
 
