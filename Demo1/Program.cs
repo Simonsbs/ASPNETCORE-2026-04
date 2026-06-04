@@ -4,7 +4,9 @@ using Demo1.Services;
 using Demo1.Services.Repositories;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System.Text;
 
 namespace Demo1 {
     public class Program {
@@ -79,6 +81,24 @@ namespace Demo1 {
 
 
 
+            builder.Services.AddAuthentication("Bearer").AddJwtBearer(options => {
+                options.TokenValidationParameters = new() {
+                    ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["Authentication:Issuer"],
+
+                    ValidateAudience = true,
+                    ValidAudience = builder.Configuration["Authentication:Audience"],
+
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(
+                        Encoding.UTF8.GetBytes(
+                            builder.Configuration["Authentication:SecretKey"]
+                            ?? throw new ArgumentNullException("Secret key not found in settings")))
+                };
+            });
+
+
+
             // ---------------------------------------------------------------------------------------------
             // Pipeline below
             // ---------------------------------------------------------------------------------------------
@@ -108,7 +128,9 @@ namespace Demo1 {
 
             app.UseHttpsRedirection();
 
-            //app.UseAuthorization();
+            app.UseAuthentication();
+
+            app.UseAuthorization();
 
             app.MapControllers();
 

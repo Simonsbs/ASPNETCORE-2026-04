@@ -4,11 +4,13 @@ using Demo1.DbContexts;
 using Demo1.DTO;
 using Demo1.Services;
 using Demo1.Services.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog.Context;
 
 namespace Demo1.Controllers {
     [ApiController]
+    [Authorize]
     [Route("api/cities")]
     public class CitiesController : ControllerBase {
         private readonly ILogger<CitiesController> _logger;

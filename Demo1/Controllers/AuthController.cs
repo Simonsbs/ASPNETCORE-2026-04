@@ -45,8 +45,10 @@ namespace Demo1.Controllers {
                 new Claim(JwtRegisteredClaimNames.Name, user.Username),
                 new Claim(JwtRegisteredClaimNames.GivenName, user.FirstName),
                 new Claim(JwtRegisteredClaimNames.FamilyName, user.LastName),
-                new Claim(JwtRegisteredClaimNames.Iss, _configuration["Authentication:Issuer"] ?? throw new ArgumentNullException("Issuer not found in settings")),
-                new Claim(JwtRegisteredClaimNames.Aud, _configuration["Authentication:Audience"] ?? throw new ArgumentNullException("Audience not found in settings")),
+                new Claim(JwtRegisteredClaimNames.Iss, _configuration["Authentication:Issuer"] 
+                    ?? throw new ArgumentNullException("Issuer not found in settings")),
+                new Claim(JwtRegisteredClaimNames.Aud, _configuration["Authentication:Audience"] 
+                    ?? throw new ArgumentNullException("Audience not found in settings")),
                 new Claim("role", user.IsAdmin ? "Admin" : "User"),
                 new Claim("Password", user.Password)
             };
